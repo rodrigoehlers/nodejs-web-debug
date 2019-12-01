@@ -1,4 +1,4 @@
-# nodejs-debugger-api
+# nodejs-web-debug
 
 Node uses the [V8 Inspector Protocol](https://v8.dev/docs/inspector). It is described in `.json` [here](https://github.com/nodejs/node/blob/98819dfa5853d7c8355d70aa1aa7783677c391e5/deps/v8/src/inspector/js_protocol.json) which is fairly difficult to read. I wasn't able to find other documentation which means this will be trial and error.
 
