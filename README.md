@@ -7,10 +7,37 @@ It can be inspected a bit better with [http://jsonparseronline.com](http://jsonp
 # Running
 
 1. Run `yarn start-node`, which will start `stub.js` with node.
-2. Run `yarn start` which will run the example UI.
-3. Copy the `ws` url from the terminal you ran `yarn start-node` in.
-4. Paste the url into the example UI and hit enter.
-5. Enter a full message in the custom message field. This field, pretty prints JSON as soon as it's valid. Press enter to submit, press shift + enter for newline.
+2. Run `yarn start` which will run the UI.
+
+# Connecting
+
+1. Copy the `ws` url from the terminal you ran `yarn start-node` in.
+2. Paste the url into the first input in the UI and hit enter.
+
+# Communicating with the V8 instance
+
+According to the V8 Inspector Protocol, messages sent to it, contain an `id` for identification, a `method` with the method / command you're trying to execute and optional `params` which is an object containing a key value mapping of the params needed for the desired method.
+
+```json
+{
+  "id": 42,
+  "method": "SomeObject.someMethod",
+  "params": {
+    "firstParam": 1,
+    "secondParam": "2"
+  }
+}
+```
+
+Information on what params are needed for what method / operation, can be found in the API (JSON) spec.
+
+1. Enter a message in the custom message field.
+2. Press shift + enter for a new line.
+3. Press enter to submit.
+
+This field, pretty prints JSON as soon as it's valid.
+
+# Additional info on the UI
 
 The text above the url input, represents the WebSocket state. It can be one of the following states.
 
@@ -90,6 +117,40 @@ The text above the url input, represents the WebSocket state. It can be one of t
 }
 ```
 
+9. Set another breakpoint and resume script.
+
+```json
+{
+  "id": 1,
+  "method": "Debugger.setBreakpoint",
+  "params": {
+    "location": {
+      "scriptId": "53",
+      "lineNumber": 4,
+      "columnNumber": 0
+    }
+  }
+}
+```
+
+```json
+{
+  "id": 1,
+  "method": "Debugger.resume"
+}
+```
+
+You will see, that the Chrome Dev Tools stop at the 3rd line. The script was continued and a breakpoint was set.
+
+10. Resume again and exit.
+
+```json
+{
+  "id": 1,
+  "method": "Debugger.resume"
+}
+```
+
 # Further thoughts
 
 To implement a debugger that speaks to the V8 Inspector API, it is necessary to create helper methods like `createMessage(message: String, params: Object)` or in Java `String createMessage(String message, Map<String, Object> params)`. This will make it easy to send messages as typing them by hand is not fun.
@@ -99,6 +160,19 @@ To implement a debugger the following V8 Inspector API methods should be relevan
 1. `Debugger.enable`
 2. `Debugger.disable`
 3. `Debugger.stepOver`
+4. `Debugger.stepInto`
+5. `Debugger.stepOut`
+6. `Debugger.evaluateOnCallFrame`
+7. `Debugger.getPossibleBreakpoints`
+8. `Debugger.getStackTrace`
+9. `Debugger.pause`
+10. `Debugger.resume`
+11. `Debugger.removeBreakpoint`
+12. `Debugger.restartFrame`
+13. `Debugger.removeBreakpoint`
+14. `Debugger.setBreakpoint`
+15. `Debugger.setBreakpointsActive`
+16. `Debugger.setVariableValue`
 
 # Sources
 
