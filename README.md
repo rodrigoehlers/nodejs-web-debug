@@ -61,7 +61,7 @@ The text above the url input, represents the WebSocket state. It can be one of t
 ```
 
 3. Open Chrome Devtools and press on the Node icon on the top left. (What happends after this???)
-4. You'll see that the debugger continued to the location we want it to. It is now at the beginning of `stub2.js`. (What happens before this???)
+4. You'll see that the debugger continued to the location we want it to. It is now at the beginning of `stub.js`. (What happens before this???)
 5. The newest message you see should be `Debugger.paused` which is an event, fired because the debugger was paused. There is a lot of information in there.
 6. In the Chrome Dev Tools you should see that the debugger is paused on the first line. Try sending another message `Debugger.stepOver`.
 
