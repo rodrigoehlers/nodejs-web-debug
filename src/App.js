@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Entry from './Entry';
 import './App.css';
 
+const ENTER_KEY_CODE = 13;
+
 const App = () => {
   const [dump, setDump] = useState([]);
   const [wsState, setWSState] = useState('ENTER URL');
@@ -20,28 +22,55 @@ const App = () => {
     };
   };
 
-  const onKeyUp = ({ target, keyCode }) => {
-    if (keyCode === 13) {
-      const { name, value } = target;
+  const onKeyUp = event => {
+    const { target, keyCode, shiftKey } = event;
+    const { name, value } = target;
+    if (keyCode === ENTER_KEY_CODE) {
       if (name === 'url') {
         setupWebSocket(value);
-      } else if (name === 'command') {
-        window.ws.send(
-          JSON.stringify({
-            id: 1,
-            method: value,
-          })
-        );
-        target.value = '';
+      } else if (name === 'message' && !shiftKey) {
+        event.preventDefault();
+        if (window.ws) window.ws.send(value);
       }
     }
   };
+
+  const onChange = ({ target }) => {
+    const { value } = target;
+    let data = null;
+    try {
+      data = JSON.parse(value);
+    } catch (e) {}
+
+    target.value = data ? JSON.stringify(data, null, 2) : value;
+  };
+
+  const onKeyDown = event => {
+    const { keyCode, shiftKey } = event;
+    // Only allow newline, when shift is pressed.
+    if (keyCode === ENTER_KEY_CODE && !shiftKey) {
+      event.preventDefault();
+    }
+  };
+
+  const defaultValue = JSON.stringify(
+    JSON.parse('{"id":1,"method":""}'),
+    null,
+    2
+  );
 
   return (
     <div className="app">
       <span className="state">{wsState}</span>
       <input name="url" placeholder="Websocket URL" onKeyUp={onKeyUp} />
-      <input name="command" placeholder="Custom command" onKeyUp={onKeyUp} />
+      <textarea
+        name="message"
+        placeholder="Custom message"
+        onKeyDown={onKeyDown}
+        onChange={onChange}
+        onKeyUp={onKeyUp}
+        defaultValue={defaultValue}
+      />
       {dump.map((c, i) => (
         <Entry key={i} content={c} />
       ))}

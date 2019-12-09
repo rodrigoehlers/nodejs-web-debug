@@ -11,8 +11,17 @@ input {
 
 input {
   width: 30vw;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 pre {
   border: 1px solid grey;
+}
+
+textarea {
+  height: 20vh;
+  resize: none;
+  margin-left: 0;
+  margin-right: 0;
 }
