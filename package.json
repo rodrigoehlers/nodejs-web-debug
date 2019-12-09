@@ -12,7 +12,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-node": "node --inspect-brk stub.js"
+    "start-node": "node --inspect-brk stub.js",
+    "start-node2": "node --inspect-brk stub2.js"
   },
   "eslintConfig": {
     "extends": "react-app"
